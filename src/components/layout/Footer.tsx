@@ -140,9 +140,10 @@ export function Footer() {
           <p className="text-center sm:text-left">
             © <Year /> <strong className="text-fg">{site.name}</strong> · {a.city}, {a.region}
           </p>
-          <ul className="flex items-center gap-5">
+          <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <li><Link href="/privacy-policy" className="hover:text-fg">Privacy Policy</Link></li>
-            <li><Link href="/terms-and-conditions" className="hover:text-fg">Terms</Link></li>
+            <li><Link href="/terms-and-conditions" className="hover:text-fg">Terms of Use</Link></li>
+            <li><Link href="/cancellation-refund-policy" className="hover:text-fg">Cancellation &amp; Refund</Link></li>
             <li>
               <BackToTop>
                 Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden />

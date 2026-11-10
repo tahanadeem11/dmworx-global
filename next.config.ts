@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
-    // node_modules lives outside the project (D:\DevEnv\dmworx-global), so the root must include it.
-    root: "D:\\",
+    // Local-only: node_modules lives outside the project on the dev machine. Set TURBOPACK_ROOT in .env.local.
+    ...(process.env.TURBOPACK_ROOT ? { root: process.env.TURBOPACK_ROOT } : {}),
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],

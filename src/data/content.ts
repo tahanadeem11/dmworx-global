@@ -16,21 +16,67 @@ export type Project = {
   slug: string;
   name: string;
   industry: string;
+  location: string;
+  url: string;
   services: string[];
   description: string;
+  highlights: string[];
   hue: [string, string];
-  placeholder: boolean;
+  /** true when full case-study details have not been supplied yet */
+  detailsPending?: boolean;
   image?: { src: string; alt: string; position?: string };
 };
 
-// PLACEHOLDER PROJECTS: replace with real, verified case studies.
+// Live client websites. Details are taken from each public website; confirm the "services" delivered per project.
 export const projects: Project[] = [
-  { slug: "project-one", name: "Project Name One", industry: "Industry / Sector", services: ["Website Development", "SEO"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#a020f0", "#4338f5"], placeholder: true, image: { src: "/images/portfolio/digital-marketing-laptop.webp", alt: "Marketer typing on a laptop with glowing digital marketing icons", position: "60% 50%" } },
-  { slug: "project-two", name: "Project Name Two", industry: "Industry / Sector", services: ["Branding", "Graphic Designing"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#4338f5", "#08bfea"], placeholder: true, image: { src: "/images/portfolio/digital-marketing-gears.webp", alt: "Hand turning a glowing digital marketing gear system", position: "50% 50%" } },
-  { slug: "project-three", name: "Project Name Three", industry: "Industry / Sector", services: ["Mobile App Development"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#7026d9", "#087bff"], placeholder: true, image: { src: "/images/portfolio/ad-campaign-interface.webp", alt: "Touching a futuristic digital advertising dashboard", position: "70% 50%" } },
-  { slug: "project-four", name: "Project Name Four", industry: "Industry / Sector", services: ["E-commerce Development", "PPC"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#087bff", "#08bfea"], placeholder: true, image: { src: "/images/portfolio/analytics-workspace.webp", alt: "Analytics dashboard on a monitor in a modern workspace", position: "30% 50%" } },
-  { slug: "project-five", name: "Project Name Five", industry: "Industry / Sector", services: ["Social Media Marketing"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#a020f0", "#087bff"], placeholder: true },
-  { slug: "project-six", name: "Project Name Six", industry: "Industry / Sector", services: ["Video & Animation"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#4338f5", "#a020f0"], placeholder: true },
+  {
+    slug: "bcr-construction",
+    name: "BCR Construction Corporation",
+    industry: "Concrete & Construction",
+    location: "Concord, CA",
+    url: "https://bcrconstructioncorp.com/",
+    services: ["Website Development"],
+    description:
+      "A conversion-focused website for a licensed concrete contractor serving Concord, California: concrete construction, foundation repair, driveway paving, slabs, waterproofing, drainage and retaining walls.",
+    highlights: [
+      "Dedicated service pages for each core trade",
+      "Trust signals: licensed & insured, transparent pricing, on-time delivery",
+      "Local search focus on Concord, CA",
+      "Project gallery and customer testimonials",
+    ],
+    hue: ["#4338f5", "#087bff"],
+    image: { src: "/images/portfolio/bcr-construction.webp", alt: "BCR Construction crew on a residential concrete job site in Concord, CA", position: "50% 40%" },
+  },
+  {
+    slug: "countryside-paradise",
+    name: "Countryside Paradise",
+    industry: "Wedding & Event Venue",
+    location: "Colbert, WA",
+    url: "https://countrysideparadise.com/",
+    services: ["Website Development"],
+    description:
+      "A warm, inviting website for a countryside wedding and event venue near Spokane, showcasing the indoor barn, outdoor lawn and pool for weddings, receptions, baby and bridal showers, work parties and family reunions.",
+    highlights: [
+      "Event-type pages: weddings, receptions, showers, work parties, reunions",
+      "Venue photography, guest reviews and a Schedule a Visit call to action",
+      "Serving Spokane, Mead and Deer Park",
+      "Click-to-call enquiries",
+    ],
+    hue: ["#7026d9", "#4338f5"],
+    image: { src: "/images/portfolio/countryside-paradise.webp", alt: "Countryside Paradise indoor barn venue set for a wedding reception", position: "50% 50%" },
+  },
+  {
+    slug: "final-touch",
+    name: "Final Touch",
+    industry: "California business",
+    location: "California",
+    url: "https://finaltouchca.com/",
+    services: ["Website Development"],
+    description: "A live website delivered for Final Touch. Full project details and results are being prepared.",
+    highlights: ["Full case study coming soon"],
+    hue: ["#a020f0", "#087bff"],
+    detailsPending: true,
+  },
 ];
 
 export const testimonialSlots = [

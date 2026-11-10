@@ -5,7 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { mainNav } from "@/data/site";
+import { mainNav, site } from "@/data/site";
+import { Phone } from "lucide-react";
 import { services } from "@/data/services";
 import { Button } from "@/components/ui/Button";
 import { getIcon } from "@/components/ui/icons";
@@ -73,7 +74,7 @@ export function Header() {
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-9 text-[15px] font-medium">
+          <ul className="flex items-center gap-7 text-[15px] xl:gap-9 font-medium">
             {mainNav.map((item) =>
               item.dropdown ? (
                 <li key={item.href} className="relative" onMouseEnter={openMega} onMouseLeave={closeMega}>
@@ -138,6 +139,10 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <a href={site.phoneHref} className="link-underline hidden items-center gap-2 text-sm font-medium xl:flex" aria-label={`Call ${site.phone}`}>
+            <Phone className="h-4 w-4 text-electric" aria-hidden />
+            {site.phone}
+          </a>
           <ThemeToggle />
           <div className="hidden sm:block">
             <Button href="/contact" arrow={false} className="!px-6 !py-3">

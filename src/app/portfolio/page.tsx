@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Portfolio",
-  description: "Selected websites, apps, branding and marketing projects by DM Worx Global.",
+  description: "Websites delivered by DM Worx Global: BCR Construction (Concord, CA), Countryside Paradise (Colbert, WA) and Final Touch (CA).",
   path: "/portfolio",
 });
 
@@ -16,14 +16,12 @@ export default function PortfolioPage() {
       <PageHero
         eyebrow="Portfolio"
         title={<>Digital experiences built to <span className="text-brand-anim">make an impact.</span></>}
-        text="The projects below are clearly labelled placeholders showing the layout. Verified case studies will replace them."
+        text="Live websites delivered for real businesses. Visit any project to see it in action."
       />
       <section className="pb-12">
-        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-16 px-5 sm:px-8 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <div key={p.slug} className={i % 2 ? "md:mt-20" : ""}>
-              <ProjectCard p={p} tall={i % 3 === 0} />
-            </div>
+        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-16 px-5 sm:px-8 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p) => (
+            <ProjectCard key={p.slug} p={p} detailed />
           ))}
         </div>
       </section>

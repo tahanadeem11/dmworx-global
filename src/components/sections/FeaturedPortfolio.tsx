@@ -11,7 +11,7 @@ export function FeaturedPortfolio() {
         <SectionHeading
           eyebrow="Portfolio"
           title={<>Digital Experiences Built to <span className="text-brand">Make an Impact.</span></>}
-          text="A preview of the layout for featured work. Real case studies will replace these placeholders."
+          text="Real websites we have delivered for businesses across the United States."
         />
         <div className="grid gap-x-8 gap-y-14 md:grid-cols-2">
           <ProjectCard p={a} tall />

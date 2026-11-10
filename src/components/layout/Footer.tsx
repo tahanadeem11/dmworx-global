@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ArrowUp, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { services } from "@/data/services";
@@ -22,6 +22,8 @@ const pills: [string, string, string, "brand" | "light"][] = [
   ["Websites & mobile apps", "left-[14%] bottom-[2%]", "-rotate-2", "light"],
   ["Open for new projects", "right-[0%] bottom-[14%]", "rotate-3", "brand"],
 ];
+
+const FOOTER_SERVICES = 8;
 
 export function Footer() {
   const a = site.address;
@@ -102,13 +104,16 @@ export function Footer() {
 
           <nav aria-label="Services">
             <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-muted">Services</h2>
-            <ul className="mt-5 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-              {services.map((s) => (
+            <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {services.slice(0, FOOTER_SERVICES).map((s) => (
                 <li key={s.slug}>
                   <Link href={`/services/${s.slug}`} className="text-sm text-fg/85 transition-colors hover:text-electric">{s.title}</Link>
                 </li>
               ))}
             </ul>
+            <Link href="/services" className="group mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-electric">
+              See all {services.length} services <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+            </Link>
           </nav>
 
           <div>

@@ -5,13 +5,13 @@ export const site = {
   description:
     "DM Worx Global is a digital solutions and technology agency delivering websites, mobile apps, SEO, digital marketing and branding that help businesses grow.",
   email: "info@dmworxglobal.com",
-  phone: "+1 (484) 205-2191",
-  phoneHref: "tel:+14842052191",
+  phone: "+1 (484) 229-1427",
+  phoneHref: "tel:+14842291427",
   address: {
-    street: "127 E Market St",
-    city: "West Chester",
+    street: "502 W 7th St, Ste 100",
+    city: "Erie",
     region: "PA",
-    zip: "19382",
+    zip: "16502-1333",
     country: "US",
   },
   // Social URLs are placeholders until the real profiles are supplied.

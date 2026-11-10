@@ -87,11 +87,11 @@ export function Header() {
             <Logo priority className="h-8 w-auto sm:h-9" />
           </Link>
 
-          <nav aria-label="Main" className="hidden lg:block">
+          <nav aria-label="Main" className="relative hidden lg:block">
             <ul className="flex items-center gap-1 text-[15px] font-medium">
               {mainNav.map((item) =>
                 item.dropdown ? (
-                  <li key={item.href} className="relative" onMouseEnter={openMega} onMouseLeave={closeMega}>
+                  <li key={item.href} onMouseEnter={openMega} onMouseLeave={closeMega}>
                     <button
                       type="button"
                       aria-expanded={mega}
@@ -109,22 +109,37 @@ export function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute left-1/2 top-full w-[660px] -translate-x-1/2 pt-3"
+                          className="absolute left-1/2 top-full w-[min(680px,calc(100vw-2rem))] -translate-x-1/2 pt-3"
                         >
-                          <div className="card rounded-3xl p-3" style={{ boxShadow: "var(--shadow-lg)" }}>
-                            <div className="grid grid-cols-2 gap-1">
-                              {services.map((s) => (
-                                <Link key={s.slug} href={`/services/${s.slug}`} className="group flex items-center gap-3 rounded-2xl p-3 text-sm transition hover:bg-band">
-                                  <span className="bg-brand-2 grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white transition-transform group-hover:scale-110">
-                                    <ServiceIcon name={s.icon} className="h-[18px] w-[18px]" />
-                                  </span>
-                                  <span className="font-medium">{s.title}</span>
-                                </Link>
-                              ))}
+                          <div className="card grid grid-cols-[1.5fr_1fr] gap-2 rounded-3xl p-2.5" style={{ boxShadow: "var(--shadow-lg)" }}>
+                            <div>
+                              <p className="px-3 pb-1 pt-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">Our services</p>
+                              <ul className="grid grid-cols-2 gap-0.5">
+                                {services.slice(0, 8).map((s) => (
+                                  <li key={s.slug}>
+                                    <Link href={`/services/${s.slug}`} className="group flex items-center gap-2.5 rounded-xl px-2.5 py-2 transition-colors hover:bg-band">
+                                      <span className="bg-brand-2 grid h-8 w-8 shrink-0 place-items-center rounded-lg text-white transition-transform duration-300 group-hover:scale-110">
+                                        <ServiceIcon name={s.icon} className="h-4 w-4" />
+                                      </span>
+                                      <span className="text-[13px] font-medium leading-tight">{s.title}</span>
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                              <Link href="/services" className="mt-1.5 flex items-center justify-between rounded-xl bg-band px-3.5 py-2.5 text-[13px] font-semibold text-electric transition-colors hover:bg-electric/10">
+                                See all {services.length} services <ArrowRight className="h-4 w-4" aria-hidden />
+                              </Link>
                             </div>
-                            <Link href="/services" className="mt-2 flex items-center justify-center gap-1 rounded-2xl bg-band p-3 text-sm font-semibold text-electric">
-                              View all services <ArrowRight className="h-4 w-4" aria-hidden />
-                            </Link>
+                            <div className="scope-dark relative flex flex-col justify-between overflow-hidden rounded-2xl p-5 text-fg" style={{ backgroundImage: "var(--grad-2)", color: "#fff" }}>
+                              <div className="dot-grid absolute inset-0 opacity-40" aria-hidden />
+                              <div className="relative">
+                                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">Not sure where to start?</p>
+                                <p className="mt-2 font-display text-lg font-semibold leading-snug">Get a free consultation for your business.</p>
+                              </div>
+                              <Link href="/contact" className="relative mt-6 inline-flex items-center justify-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-[13px] font-semibold text-[#09090d]">
+                                Let&apos;s talk <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                              </Link>
+                            </div>
                           </div>
                         </motion.div>
                       )}

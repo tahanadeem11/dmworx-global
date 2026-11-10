@@ -4,12 +4,13 @@ import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import type { Project } from "@/data/content";
+import { ProjectArt } from "./ProjectArt";
 
 export function ProjectCard({ p, tall = false }: { p: Project; tall?: boolean }) {
   const [a, b] = p.hue;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-9%", "9%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
 
   return (
     <motion.article
@@ -27,16 +28,8 @@ export function ProjectCard({ p, tall = false }: { p: Project; tall?: boolean })
         className={`relative overflow-hidden rounded-[1.75rem] ${tall ? "aspect-[4/5]" : "aspect-[16/11]"}`}
         style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
       >
-        <motion.div style={{ y }} className="absolute -inset-[12%] transition-transform duration-[900ms] ease-out group-hover:scale-105">
-          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="h-full w-full" aria-hidden>
-            <circle cx="320" cy="60" r="120" fill="#fff" opacity="0.1" />
-            <circle cx="60" cy="260" r="150" fill="#fff" opacity="0.08" />
-            <rect x="70" y="80" width="260" height="150" rx="16" fill="#fff" opacity="0.14" />
-            <rect x="90" y="100" width="90" height="10" rx="5" fill="#fff" opacity="0.7" />
-            <rect x="90" y="124" width="150" height="6" rx="3" fill="#fff" opacity="0.4" />
-            <rect x="90" y="140" width="120" height="6" rx="3" fill="#fff" opacity="0.4" />
-            <rect x="90" y="172" width="60" height="30" rx="15" fill="#fff" opacity="0.85" />
-          </svg>
+        <motion.div style={{ y }} className="absolute -inset-[6%] transition-transform duration-[900ms] ease-out group-hover:scale-105">
+          <ProjectArt slug={p.slug} />
         </motion.div>
         {p.placeholder && (
           <span className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-white backdrop-blur">

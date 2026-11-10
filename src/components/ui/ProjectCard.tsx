@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import type { Project } from "@/data/content";
+import Image from "next/image";
 import { ProjectArt } from "./ProjectArt";
 
 export function ProjectCard({ p, tall = false }: { p: Project; tall?: boolean }) {
@@ -29,7 +30,22 @@ export function ProjectCard({ p, tall = false }: { p: Project; tall?: boolean })
         style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
       >
         <motion.div style={{ y }} className="absolute -inset-[6%] transition-transform duration-[900ms] ease-out group-hover:scale-105">
-          <ProjectArt slug={p.slug} />
+          {p.image ? (
+            <>
+              <Image
+                src={p.image.src}
+                alt={p.image.alt}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: p.image.position }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent mix-blend-multiply" aria-hidden />
+              <div className="bg-brand-2 absolute inset-0 opacity-[0.18] mix-blend-soft-light" aria-hidden />
+            </>
+          ) : (
+            <ProjectArt slug={p.slug} />
+          )}
         </motion.div>
         {p.placeholder && (
           <span className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-white backdrop-blur">

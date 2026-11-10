@@ -20,14 +20,15 @@ export type Project = {
   description: string;
   hue: [string, string];
   placeholder: boolean;
+  image?: { src: string; alt: string; position?: string };
 };
 
 // PLACEHOLDER PROJECTS: replace with real, verified case studies.
 export const projects: Project[] = [
-  { slug: "project-one", name: "Project Name One", industry: "Industry / Sector", services: ["Website Development", "SEO"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#a020f0", "#4338f5"], placeholder: true },
-  { slug: "project-two", name: "Project Name Two", industry: "Industry / Sector", services: ["Branding", "Graphic Designing"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#4338f5", "#08bfea"], placeholder: true },
-  { slug: "project-three", name: "Project Name Three", industry: "Industry / Sector", services: ["Mobile App Development"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#7026d9", "#087bff"], placeholder: true },
-  { slug: "project-four", name: "Project Name Four", industry: "Industry / Sector", services: ["E-commerce Development", "PPC"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#087bff", "#08bfea"], placeholder: true },
+  { slug: "project-one", name: "Project Name One", industry: "Industry / Sector", services: ["Website Development", "SEO"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#a020f0", "#4338f5"], placeholder: true, image: { src: "/images/portfolio/digital-marketing-laptop.webp", alt: "Marketer typing on a laptop with glowing digital marketing icons", position: "60% 50%" } },
+  { slug: "project-two", name: "Project Name Two", industry: "Industry / Sector", services: ["Branding", "Graphic Designing"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#4338f5", "#08bfea"], placeholder: true, image: { src: "/images/portfolio/digital-marketing-gears.webp", alt: "Hand turning a glowing digital marketing gear system", position: "50% 50%" } },
+  { slug: "project-three", name: "Project Name Three", industry: "Industry / Sector", services: ["Mobile App Development"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#7026d9", "#087bff"], placeholder: true, image: { src: "/images/portfolio/ad-campaign-interface.webp", alt: "Touching a futuristic digital advertising dashboard", position: "70% 50%" } },
+  { slug: "project-four", name: "Project Name Four", industry: "Industry / Sector", services: ["E-commerce Development", "PPC"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#087bff", "#08bfea"], placeholder: true, image: { src: "/images/portfolio/analytics-workspace.webp", alt: "Analytics dashboard on a monitor in a modern workspace", position: "30% 50%" } },
   { slug: "project-five", name: "Project Name Five", industry: "Industry / Sector", services: ["Social Media Marketing"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#a020f0", "#087bff"], placeholder: true },
   { slug: "project-six", name: "Project Name Six", industry: "Industry / Sector", services: ["Video & Animation"], description: "A real case study will appear here: the brief, what we built, and the outcome.", hue: ["#4338f5", "#a020f0"], placeholder: true },
 ];

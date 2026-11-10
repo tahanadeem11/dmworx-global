@@ -105,7 +105,7 @@ export function Header() {
                               <Link
                                 key={s.slug}
                                 href={`/services/${s.slug}`}
-                                className="group flex items-center gap-3 rounded-2xl p-3 text-sm transition hover:bg-alt"
+                                className="group flex items-center gap-3 rounded-2xl p-3 text-sm transition hover:bg-band"
                               >
                                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-2 text-white">
                                   <Icon className="h-[18px] w-[18px]" aria-hidden />
@@ -115,7 +115,7 @@ export function Header() {
                             );
                           })}
                         </div>
-                        <Link href="/services" className="mt-2 block rounded-2xl bg-alt p-3 text-center text-sm font-semibold text-electric">
+                        <Link href="/services" className="mt-2 block rounded-2xl bg-band p-3 text-center text-sm font-semibold text-electric">
                           View all services →
                         </Link>
                       </motion.div>

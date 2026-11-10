@@ -1,170 +1,235 @@
 "use client";
 
-import { BarChart3, Code2, Smartphone, TrendingUp } from "lucide-react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { Code2, MousePointer2, Palette, Sparkles, TrendingUp } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { services } from "@/data/services";
+import { useReady } from "@/hooks/useReady";
 
-const lines = ["Transforming Ideas", "Into Powerful", "Digital Experiences."];
+const HeroScene = dynamic(() => import("@/components/three/HeroScene"), { ssr: false });
+
+function hasWebGL() {
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yText = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const yVis = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const root = useRef<HTMLElement>(null);
+  const progress = useRef(0);
+  const ready = useReady();
+  const [webgl, setWebgl] = useState<boolean | null>(null);
+  const [inView, setInView] = useState(true);
+  const [sceneReady, setSceneReady] = useState(false);
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 80, damping: 18 });
-  const sy = useSpring(my, { stiffness: 80, damping: 18 });
-  const rotY = useTransform(sx, [-1, 1], [-8, 8]);
-  const rotX = useTransform(sy, [-1, 1], [6, -6]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setWebgl(hasWebGL());
+  }, []);
+
+  // pause the 3D loop whenever the hero is off-screen or the tab is hidden
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    let visible = true;
+    const sync = () => setInView(visible && !document.hidden);
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      sync();
+    });
+    io.observe(el);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    gsap.registerPlugin(SplitText, ScrollTrigger);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const el = root.current!;
+
+    const ctx = gsap.context(() => {
+      const show = (sel: string, vars: gsap.TweenVars = {}) => gsap.set(sel, { visibility: "visible", ...vars });
+      show(".hero-init");
+      if (reduce) return;
+
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      tl.fromTo(".h-eyebrow", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1 }, 0.1);
+
+      SplitText.create(".h-line", {
+        type: "lines,chars",
+        mask: "lines",
+        onSplit(self) {
+          tl.from(self.chars, { yPercent: 115, rotate: 6, duration: 1.2, stagger: 0.022 }, 0.2);
+        },
+      });
+      tl.fromTo(".h-accent", { yPercent: 115 }, { yPercent: 0, duration: 1.3 }, 0.55)
+        .fromTo(".h-sub", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1 }, 0.8)
+        .fromTo(".h-cta > *", { opacity: 0, y: 24, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.1 }, 0.95)
+        .fromTo(".h-par", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 1.1, stagger: 0.14, ease: "back.out(1.6)" }, 0.9)
+        .fromTo(".h-strip", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, 1.2)
+        .fromTo(".h-cue", { opacity: 0 }, { opacity: 1, duration: 1 }, 1.5);
+
+      // scroll exit: content drifts up while the 3D orb recedes
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (self) => (progress.current = self.progress),
+      });
+      gsap.to(".h-content", {
+        yPercent: -14,
+        opacity: 0.2,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top top", end: "bottom 20%", scrub: true },
+      });
+
+      // cursor parallax on floating glass chips
+      if (window.matchMedia("(hover: hover)").matches) {
+        const pars = gsap.utils.toArray<HTMLElement>(".h-par");
+        const movers = pars.map((p) => ({
+          x: gsap.quickTo(p, "x", { duration: 0.9, ease: "power3" }),
+          y: gsap.quickTo(p, "y", { duration: 0.9, ease: "power3" }),
+          d: Number(p.dataset.depth ?? 20),
+        }));
+        const onMove = (e: PointerEvent) => {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          movers.forEach((m) => {
+            m.x(nx * m.d * 2);
+            m.y(ny * m.d * 2);
+          });
+        };
+        window.addEventListener("pointermove", onMove, { passive: true });
+        return () => window.removeEventListener("pointermove", onMove);
+      }
+    }, root);
+
+    return () => ctx.revert();
+  }, [ready]);
+
+  const marquee = [...services, ...services];
 
   return (
-    <section
-      ref={ref}
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
-        my.set(((e.clientY - r.top) / r.height) * 2 - 1);
-      }}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pb-20 pt-32"
-    >
-      <div className="dot-grid absolute inset-0 -z-10" aria-hidden />
-      <div className="orb -left-40 top-0 -z-10 h-[34rem] w-[34rem] bg-purple" aria-hidden />
-      <div className="orb -right-32 top-32 -z-10 h-[30rem] w-[30rem] bg-electric" aria-hidden />
-      <div className="orb bottom-0 left-1/3 -z-10 h-72 w-72 bg-cyan" aria-hidden />
+    <section ref={root} className="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
+      {/* ambient background */}
+      <div className="dot-grid absolute inset-0 -z-20" aria-hidden />
+      <div className="orb -left-40 -top-20 -z-20 h-[36rem] w-[36rem] bg-purple" aria-hidden />
+      <div className="orb -right-40 top-1/3 -z-20 h-[34rem] w-[34rem] bg-electric" aria-hidden />
 
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <motion.div style={{ y: yText }}>
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
+      {/* 3D scene */}
+      <div className={`absolute inset-0 -z-10 transition-opacity duration-[1400ms] ${sceneReady || webgl === false ? "opacity-100" : "opacity-0"}`} aria-hidden>
+        {webgl ? (
+          <HeroScene progress={progress} active={inView && ready} onReady={() => setSceneReady(true)} />
+        ) : (
+          webgl === false && (
+            <div className="bg-brand absolute right-[12%] top-1/2 h-72 w-72 -translate-y-1/2 rounded-full opacity-70 blur-2xl" />
+          )
+        )}
+      </div>
+      {/* keeps copy legible over the 3D scene in both themes */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-bg from-40% via-bg/70 via-60% to-transparent lg:bg-gradient-to-r lg:from-bg lg:via-bg/55 lg:to-transparent lg:[mask-image:linear-gradient(90deg,#000_30%,transparent_62%)]" aria-hidden />
+
+      <div className="h-content relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-5 pb-10 pt-32 sm:px-8 lg:justify-center lg:pb-16">
+        <div className="max-w-3xl">
+          <span className="h-eyebrow hero-init glass inline-flex items-center gap-2.5 rounded-full py-1.5 pl-2 pr-4 text-[11px] font-semibold uppercase tracking-[0.18em] sm:text-xs">
+            <span className="bg-brand grid h-6 w-6 place-items-center rounded-full text-white">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
+            </span>
             Digital solutions &amp; technology agency
-          </motion.span>
+          </span>
 
-          <h1 className="mt-7 text-[2.7rem] font-semibold leading-[1.02] sm:text-6xl xl:text-7xl">
-            {lines.map((l, i) => (
-              <span key={l} className="block overflow-hidden pb-[0.08em]">
-                <motion.span
-                  initial={{ y: "110%" }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.25 + i * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className={`block ${i === 2 ? "text-brand-anim" : ""}`}
-                >
-                  {l}
-                </motion.span>
-              </span>
-            ))}
+          <h1 className="mt-6 text-[clamp(2.6rem,7.4vw,6.4rem)] font-semibold leading-[0.98]">
+            <span className="h-line hero-init block">Transforming Ideas</span>
+            <span className="h-line hero-init block">Into Powerful</span>
+            <span className="block overflow-hidden pb-[0.12em]">
+              <span className="h-accent hero-init text-brand-anim block">Digital Experiences.</span>
+            </span>
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75 }}
-            className="mt-7 max-w-xl text-lg leading-relaxed text-muted"
-          >
+          <p className="h-sub hero-init mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             From strategic digital marketing to high-performance websites and mobile applications, we help businesses build their digital presence, reach the right audience, and grow with confidence.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-            className="mt-9 flex flex-wrap gap-4"
-          >
-            <Button href="/services">Explore Our Services</Button>
-            <Button href="/contact" variant="ghost">Let&apos;s Work Together</Button>
-          </motion.div>
-        </motion.div>
+          <div className="h-cta mt-9 flex flex-wrap gap-4">
+            <Button href="/services" className="hero-init">Explore Our Services</Button>
+            <Button href="/contact" variant="ghost" className="hero-init">Let&apos;s Work Together</Button>
+          </div>
+        </div>
+      </div>
 
-        {/* Interactive growth visual */}
-        <motion.div style={{ y: yVis }} className="relative mx-auto hidden h-[30rem] w-full max-w-[34rem] lg:block" aria-hidden>
-          <motion.div style={{ rotateX: rotX, rotateY: rotY, transformPerspective: 1000 }} className="absolute inset-0">
-            <svg viewBox="0 0 500 500" className="absolute inset-0 h-full w-full">
-              <defs>
-                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#a020f0" />
-                  <stop offset="0.5" stopColor="#4338f5" />
-                  <stop offset="0.8" stopColor="#087bff" />
-                  <stop offset="1" stopColor="#08bfea" />
-                </linearGradient>
-              </defs>
-              <g className="spin-slow" style={{ transformOrigin: "250px 250px" }}>
-                <circle cx="250" cy="250" r="200" fill="none" stroke="url(#g)" strokeWidth="1.5" strokeDasharray="4 10" opacity="0.7" />
-                <circle cx="450" cy="250" r="8" fill="url(#g)" />
-                <circle cx="110" cy="109" r="6" fill="#08bfea" />
-              </g>
-              <circle cx="250" cy="250" r="140" fill="none" stroke="url(#g)" strokeWidth="1" opacity="0.4" />
-              <circle cx="250" cy="250" r="95" fill="url(#g)" opacity="0.9" />
-              <circle cx="250" cy="250" r="95" fill="none" stroke="#fff" strokeOpacity="0.25" strokeWidth="2" />
-              <path d="M205 270 L235 240 L255 258 L295 215" fill="none" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M272 215 H295 V238" fill="none" stroke="#fff" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-
-            <FloatCard className="left-0 top-10" delay={0}>
-              <Code2 className="h-5 w-5 text-purple" />
-              <div>
-                <div className="text-xs text-muted">Development</div>
-                <div className="font-display text-sm font-semibold">Fast. Secure. Scalable.</div>
+      {/* floating glass chips: parallax with the cursor (desktop) */}
+      <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+        <div className="mx-auto h-full max-w-7xl px-8">
+          <div className="relative h-full">
+            <div className="h-par hero-init absolute right-[30%] top-[19%]" data-depth="26">
+              <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3">
+                <span className="bg-brand-2 grid h-9 w-9 place-items-center rounded-xl text-white"><Code2 className="h-[18px] w-[18px]" /></span>
+                <div>
+                  <div className="text-[11px] uppercase tracking-widest text-muted">Web &amp; Apps</div>
+                  <div className="font-display text-sm font-semibold">Fast. Secure. Scalable.</div>
+                </div>
               </div>
-            </FloatCard>
-
-            <FloatCard className="right-0 top-24" delay={1.2}>
-              <TrendingUp className="h-5 w-5 text-electric" />
-              <div>
-                <div className="text-xs text-muted">Growth</div>
-                <div className="flex h-6 items-end gap-1">
-                  {[40, 62, 48, 80, 100].map((h, i) => (
-                    <span key={i} className="w-1.5 rounded-sm bg-brand" style={{ height: `${h}%` }} />
+            </div>
+            <div className="h-par hero-init absolute right-[0%] top-[27%]" data-depth="40">
+              <div className="glass float-y rounded-2xl px-4 py-3" style={{ animationDelay: "1.2s" }}>
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted"><TrendingUp className="h-3.5 w-3.5 text-electric" /> Search visibility</div>
+                <div className="mt-2 flex h-9 items-end gap-1.5">
+                  {[35, 52, 44, 70, 62, 88, 100].map((h, i) => (
+                    <span key={i} className="bg-brand w-2 rounded-sm" style={{ height: `${h}%` }} />
                   ))}
                 </div>
               </div>
-            </FloatCard>
-
-            <FloatCard className="bottom-16 left-6" delay={2.2}>
-              <Smartphone className="h-5 w-5 text-royal" />
-              <div>
-                <div className="text-xs text-muted">Mobile apps</div>
-                <div className="font-display text-sm font-semibold">iOS &amp; Android</div>
+            </div>
+            <div className="h-par hero-init absolute bottom-[26%] right-[12%]" data-depth="34">
+              <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3" style={{ animationDelay: "2.2s" }}>
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-solid text-purple"><Palette className="h-[18px] w-[18px]" /></span>
+                <div>
+                  <div className="text-[11px] uppercase tracking-widest text-muted">Brand &amp; Creative</div>
+                  <div className="mt-1 flex gap-1.5">
+                    {["#a020f0", "#4338f5", "#087bff", "#08bfea"].map((c) => <span key={c} className="h-3.5 w-3.5 rounded-full" style={{ background: c }} />)}
+                  </div>
+                </div>
               </div>
-            </FloatCard>
-
-            <FloatCard className="bottom-6 right-10" delay={3}>
-              <BarChart3 className="h-5 w-5 text-cyan" />
-              <div>
-                <div className="text-xs text-muted">Marketing</div>
-                <div className="font-display text-sm font-semibold">SEO · Ads · Social</div>
+            </div>
+            <div className="h-par hero-init absolute right-[8%] top-[16%]" data-depth="18">
+              <div className="glass float-y flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium" style={{ animationDelay: "3s" }}>
+                <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-cyan" /></span>
+                Open for new projects
               </div>
-            </FloatCard>
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs uppercase tracking-[0.25em] text-muted sm:flex" aria-hidden>
-        Scroll
-        <span className="relative h-10 w-px overflow-hidden bg-line">
-          <motion.span
-            animate={{ y: ["-100%", "100%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 bg-brand"
-          />
-        </span>
+      {/* interaction hint */}
+      <div className="h-cue hero-init absolute bottom-[5.5rem] right-8 hidden items-center gap-2 text-xs text-muted xl:flex" aria-hidden>
+        <MousePointer2 className="h-3.5 w-3.5" /> Move your cursor · click the orb
+      </div>
+
+      {/* services marquee */}
+      <div className="h-strip hero-init marquee relative z-10 border-y border-line bg-bg/60 py-4 backdrop-blur-md">
+        <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap pr-10">
+          {marquee.map((s, i) => (
+            <Link key={i} href={`/services/${s.slug}`} className="group flex items-center gap-10 font-display text-lg font-medium text-muted transition-colors hover:text-fg">
+              {s.title}
+              <span className="bg-brand h-1.5 w-1.5 rounded-full" aria-hidden />
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
-  );
-}
-
-function FloatCard({ children, className, delay }: { children: React.ReactNode; className: string; delay: number }) {
-  return (
-    <div className={`absolute ${className}`}>
-      <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3" style={{ animationDelay: `${delay}s` }}>
-        {children}
-      </div>
-    </div>
   );
 }

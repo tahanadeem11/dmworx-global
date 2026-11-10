@@ -31,7 +31,7 @@ export default function ContactPage() {
           <Reveal>
             <ul className="space-y-4">
               {items.map((i) => (
-                <li key={i.label} className="flex gap-4 rounded-3xl border border-line bg-solid p-5">
+                <li key={i.label} className="flex gap-4 card spot rounded-3xl p-5">
                   <span className="bg-brand-2 grid h-11 w-11 shrink-0 place-items-center rounded-2xl text-white"><i.icon className="h-5 w-5" aria-hidden /></span>
                   <div><div className="text-xs font-semibold uppercase tracking-widest text-muted">{i.label}</div><div className="mt-1 font-medium">{i.node}</div></div>
                 </li>
@@ -39,7 +39,7 @@ export default function ContactPage() {
             </ul>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="grad-border rounded-[2rem] bg-solid p-6 sm:p-10">
+            <div className="card grad-border rounded-[2rem] p-6 sm:p-10">
               <h2 className="mb-6 text-2xl font-semibold">Start your project</h2>
               <ContactForm id="contact" />
             </div>

@@ -16,10 +16,10 @@ const quick = [
 export function Footer() {
   const a = site.address;
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-alt">
+    <footer className="relative overflow-hidden border-t border-line bg-band">
       <div className="orb -bottom-40 left-1/4 h-80 w-80 bg-royal" aria-hidden />
       <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_0.7fr_1.2fr_1.1fr]">
+        <div className="grid gap-12 sm:grid-cols-2 xl:grid-cols-[1.4fr_0.6fr_1.3fr_1.1fr]">
           <div>
             <Logo className="h-10 w-auto" />
             <p className="mt-5 max-w-sm leading-relaxed text-muted">
@@ -73,7 +73,7 @@ export function Footer() {
               </li>
               <li className="flex gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-electric" aria-hidden />
-                <a href={`mailto:${site.email}`} className="break-all hover:text-electric">{site.email}</a>
+                <a href={`mailto:${site.email}`} className="hover:text-electric">{site.email}</a>
               </li>
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-electric" aria-hidden />

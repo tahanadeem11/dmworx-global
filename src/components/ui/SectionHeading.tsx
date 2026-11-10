@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
+import { SplitHeading } from "./SplitHeading";
 
 export function SectionHeading({
   eyebrow,
@@ -12,14 +13,22 @@ export function SectionHeading({
   text?: string;
   align?: "center" | "left";
 }) {
+  const center = align === "center";
   return (
-    <Reveal className={`mb-14 max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
-      <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-electric">
-        <span className="h-px w-8 bg-brand" aria-hidden />
-        {eyebrow}
-      </span>
-      <h2 className="mt-4 text-4xl font-semibold leading-[1.05] sm:text-5xl">{title}</h2>
-      {text && <p className="mt-5 text-lg leading-relaxed text-muted">{text}</p>}
-    </Reveal>
+    <div className={`mb-14 max-w-3xl sm:mb-16 ${center ? "mx-auto text-center" : ""}`}>
+      <Reveal y={16}>
+        <span className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-electric">
+          <span className="bg-brand h-px w-8" aria-hidden />
+          {eyebrow}
+          {center && <span className="bg-brand h-px w-8" aria-hidden />}
+        </span>
+      </Reveal>
+      <SplitHeading className="mt-5 text-[clamp(2.1rem,5vw,3.6rem)] font-semibold leading-[1.04]">{title}</SplitHeading>
+      {text && (
+        <Reveal delay={0.15} y={20}>
+          <p className="mt-5 text-lg leading-relaxed text-muted">{text}</p>
+        </Reveal>
+      )}
+    </div>
   );
 }

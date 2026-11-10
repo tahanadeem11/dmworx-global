@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SplitHeading } from "@/components/ui/SplitHeading";
 import { ServiceIcon } from "@/components/ui/icons";
 import { getService, services, type Service } from "@/data/services";
 import { site } from "@/data/site";
@@ -27,9 +28,9 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
               <Link href="/services" className="hover:text-electric">Services</Link> <span aria-hidden>/</span> <span className="text-fg">{service.title}</span>
             </nav>
             <span className="bg-brand-2 mb-6 grid h-14 w-14 place-items-center rounded-2xl text-white shadow-lg"><ServiceIcon name={service.icon} className="h-7 w-7" /></span>
-            <h1 className="text-4xl font-semibold leading-[1.05] sm:text-6xl">
+            <SplitHeading as="h1" start="top 100%" className="text-[clamp(2.4rem,5.6vw,4.6rem)] font-semibold leading-[1.02]">
               {service.heroHeadline} <span className="text-brand-anim">{service.heroAccent}</span>
-            </h1>
+            </SplitHeading>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{service.heroText}</p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Button href="#get-started">Get a Free Consultation</Button>
@@ -41,7 +42,7 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
       </section>
 
       {/* B. Introduction */}
-      <section className="bg-alt py-24">
+      <section className="band py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-electric">Overview</span>
@@ -60,8 +61,8 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
           <ul className="grid gap-4 sm:grid-cols-2">
             {service.problems.map((p, i) => (
               <Reveal as="li" key={p.title} delay={i * 0.06}>
-                <div className="flex h-full gap-4 rounded-3xl border border-line bg-solid p-6">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-alt2 text-purple"><TriangleAlert className="h-5 w-5" aria-hidden /></span>
+                <div className="flex h-full gap-4 card spot rounded-3xl p-6">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-band2 text-purple"><TriangleAlert className="h-5 w-5" aria-hidden /></span>
                   <div><h3 className="font-semibold">{p.title}</h3><p className="mt-1.5 text-sm leading-relaxed text-muted">{p.text}</p></div>
                 </div>
               </Reveal>
@@ -71,11 +72,11 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
       </section>
 
       {/* D. What we offer */}
-      <section id="offer" className="relative scroll-mt-24 overflow-hidden bg-alt py-24 sm:py-28">
+      <section id="offer" className="relative scroll-mt-24 overflow-hidden band py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <SectionHeading eyebrow="What we offer" title={<>Capabilities built around <span className="text-brand">{service.title}</span></>} />
           {listLayout ? (
-            <ol className="mx-auto max-w-4xl divide-y divide-line rounded-3xl border border-line bg-solid">
+            <ol className="mx-auto max-w-4xl divide-y divide-line card spot rounded-3xl">
               {service.offers.map((o, i) => (
                 <Reveal as="li" key={o.title} delay={i * 0.05}>
                   <div className="flex gap-5 p-6 sm:p-7">
@@ -89,7 +90,7 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {service.offers.map((o, i) => (
                 <Reveal as="li" key={o.title} delay={i * 0.05}>
-                  <div className="grad-border h-full rounded-3xl bg-solid p-6 transition-transform duration-300 hover:-translate-y-1.5">
+                  <div className="card spot grad-border h-full rounded-3xl p-6 transition-transform duration-300 hover:-translate-y-1.5">
                     <span className="bg-brand grid h-9 w-9 place-items-center rounded-full text-white"><Check className="h-4 w-4" aria-hidden /></span>
                     <h3 className="mt-4 text-lg font-semibold">{o.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{o.text}</p>
@@ -120,13 +121,13 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
       </section>
 
       {/* F. Approach */}
-      <section className="bg-alt py-24 sm:py-28">
+      <section className="band py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <SectionHeading eyebrow="Our approach" title={<>How we deliver <span className="text-brand">{service.title}</span></>} />
           <ol className="grid gap-6 lg:grid-cols-4">
             {service.approach.map((s, i) => (
               <Reveal as="li" key={s.title} delay={i * 0.08}>
-                <div className="relative h-full rounded-3xl border border-line bg-solid p-7">
+                <div className="relative h-full card spot rounded-3xl p-7">
                   <span className="bg-brand-2 grid h-11 w-11 place-items-center rounded-full font-display text-sm font-bold text-white">{i + 1}</span>
                   <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
@@ -148,7 +149,7 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
           <ul className="space-y-4">
             {service.whyUs.map((w, i) => (
               <Reveal as="li" key={w.title} delay={i * 0.08}>
-                <div className="flex gap-4 rounded-3xl border border-line bg-solid p-6">
+                <div className="flex gap-4 card spot rounded-3xl p-6">
                   <span className="bg-brand mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full text-white"><Check className="h-3.5 w-3.5" aria-hidden /></span>
                   <div><h3 className="font-semibold">{w.title}</h3><p className="mt-1 text-sm text-muted">{w.text}</p></div>
                 </div>
@@ -159,10 +160,10 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
       </section>
 
       {/* H. Related projects + related services */}
-      <section className="bg-alt py-24 sm:py-28">
+      <section className="band py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <SectionHeading eyebrow="Related" title={<>Projects &amp; <span className="text-brand">related services</span></>} />
-          <Reveal className="mb-8 rounded-3xl border border-dashed border-line bg-solid p-8 text-center">
+          <Reveal className="mb-8 card rounded-3xl border-dashed p-8 text-center">
             <p className="font-medium">Related {service.title.toLowerCase()} projects will appear here.</p>
             <p className="mt-1 text-sm text-muted">Real case studies are being prepared. <Link href="/portfolio" className="font-semibold text-electric">Visit the portfolio →</Link></p>
           </Reveal>
@@ -172,7 +173,7 @@ export function ServicePage({ service, index }: { service: Service; index: numbe
               if (!r) return null;
               return (
                 <li key={slug}>
-                  <Link href={`/services/${slug}`} className="grad-border group flex h-full flex-col rounded-3xl bg-solid p-6 transition-transform hover:-translate-y-1.5">
+                  <Link href={`/services/${slug}`} className="card spot grad-border group flex h-full flex-col rounded-3xl p-6 transition-transform hover:-translate-y-1.5">
                     <ServiceIcon name={r.icon} className="h-7 w-7 text-electric" />
                     <h3 className="mt-4 font-semibold">{r.title}</h3>
                     <p className="mt-1.5 line-clamp-2 text-sm text-muted">{r.short}</p>

@@ -26,7 +26,7 @@ export function Button({ href, children, variant = "primary", arrow = true, clas
     <Link
       ref={ref}
       href={href}
-      className={`group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-shadow ${styles[variant]} ${className}`}
+      className={`group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-shadow ${variant === "primary" ? "shine" : ""} ${styles[variant]} ${className}`}
     >
       {children}
       {arrow && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />}

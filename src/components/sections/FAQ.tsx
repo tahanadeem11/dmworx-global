@@ -5,7 +5,7 @@ import { homeFaqs } from "@/data/content";
 
 export function FAQ() {
   return (
-    <section className="bg-alt py-24 sm:py-32">
+    <section className="band py-24 sm:py-32">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
         <SectionHeading eyebrow="FAQ" title={<>Questions, <span className="text-brand">answered.</span></>} />
         <Reveal>

@@ -15,7 +15,7 @@ export function Testimonials() {
         <ul className="grid gap-5 md:grid-cols-3">
           {testimonialSlots.map((t, i) => (
             <Reveal as="li" key={t.service} delay={i * 0.1}>
-              <figure className="grad-border relative h-full rounded-3xl bg-solid p-8">
+              <figure className="card spot grad-border relative h-full rounded-3xl p-8">
                 <Quote className="h-8 w-8 text-purple/50" aria-hidden />
                 <blockquote className="mt-4 space-y-2" aria-hidden>
                   <span className="block h-3 w-full rounded bg-line" />

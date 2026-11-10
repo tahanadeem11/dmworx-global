@@ -12,7 +12,7 @@ const Bar = ({ w, h = "h-2", c = "bg-line" }: { w: string; h?: string; c?: strin
 const visuals: Record<VisualId, () => ReactNode> = {
   map: () => (
     <>
-      <div className="absolute inset-6 overflow-hidden rounded-3xl border border-line bg-alt2">
+      <div className="absolute inset-6 overflow-hidden rounded-3xl border border-line bg-band2">
         <svg viewBox="0 0 300 220" className="h-full w-full opacity-70" aria-hidden>
           {[40, 90, 140, 190].map((y) => <path key={y} d={`M0 ${y} Q80 ${y - 30} 150 ${y} T300 ${y}`} stroke="var(--line)" strokeWidth="10" fill="none" />)}
           {[60, 130, 200, 260].map((x) => <path key={x} d={`M${x} 0 L${x - 20} 220`} stroke="var(--line)" strokeWidth="8" />)}

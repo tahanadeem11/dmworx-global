@@ -31,7 +31,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl gap-5 px-5 sm:px-8 md:grid-cols-3">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 0.08}>
-              <div className="grad-border h-full rounded-3xl bg-solid p-8">
+              <div className="card spot grad-border h-full rounded-3xl p-8">
                 <span className="bg-brand-2 grid h-12 w-12 place-items-center rounded-2xl text-white"><v.icon className="h-6 w-6" aria-hidden /></span>
                 <h2 className="mt-5 text-2xl font-semibold">{v.title}</h2>
                 <p className="mt-2 leading-relaxed text-muted">{v.text}</p>

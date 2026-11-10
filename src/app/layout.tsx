@@ -4,6 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Interactions } from "@/components/layout/Interactions";
+import { Preloader } from "@/components/layout/Preloader";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { themeScript } from "@/components/layout/ThemeToggle";
 import { site } from "@/data/site";
@@ -42,7 +44,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-solid focus:px-4 focus:py-2">
           Skip to content
         </a>
+        <Preloader />
         <SmoothScroll />
+        <Interactions />
         <Header />
         <main id="main">{children}</main>
         <Footer />

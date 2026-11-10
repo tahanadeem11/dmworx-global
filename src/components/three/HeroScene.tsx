@@ -200,7 +200,7 @@ function Rig({ mouse, scroll, pulse, anchor, dark }: Shared) {
     // place and size the logo system to sit exactly inside the hero's visual slot
     const targetX = a.w > 0 ? a.x * wpp : 0;
     const targetY = (a.w > 0 ? -a.y * wpp : 0) + s * 1.4;
-    const fit = a.w > 0 ? (a.w * 0.8 * wpp) / MARK_W : 0.8;
+    const fit = a.w > 0 ? (a.w * (size.width < 1000 ? 0.74 : 0.8) * wpp) / MARK_W : 0.8;
     const targetScale = Math.min(1.5, Math.max(0.35, fit)) * (1 - s * 0.35);
 
     g.position.x += (targetX - g.position.x) * k;

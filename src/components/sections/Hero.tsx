@@ -143,10 +143,13 @@ export function Hero() {
         )}
       </div>
 
-      <div className="h-content relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-5 pb-12 pt-28 sm:px-8 lg:pb-16 lg:pt-32">
+      {/* keeps copy legible where the logo sits behind it on small screens */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-bg from-35% via-bg/55 via-60% to-transparent lg:hidden" aria-hidden />
+
+      <div className="h-content relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-5 pb-12 pt-28 sm:px-8 lg:justify-center lg:pb-16 lg:pt-32">
         <div className="grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
           {/* visual slot: the 3D logo and chips are aligned to this box */}
-          <div ref={slot} className="relative order-first h-[34svh] min-h-[15rem] lg:order-last lg:h-[34rem]">
+          <div ref={slot} className="pointer-events-none absolute -top-4 right-[-6%] h-[40svh] w-[90%] sm:right-[-6%] sm:w-[70%] lg:pointer-events-auto lg:relative lg:right-auto lg:top-auto lg:order-last lg:h-[34rem] lg:w-auto">
             <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
               <div className="h-par hero-init absolute left-[-2%] top-[8%]" data-depth="22">
                 <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3">

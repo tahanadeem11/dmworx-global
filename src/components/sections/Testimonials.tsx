@@ -5,7 +5,7 @@ import { testimonialSlots } from "@/data/content";
 
 export function Testimonials() {
   return (
-    <section className="py-24 sm:py-32">
+    <section className="overflow-x-clip py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Testimonials"

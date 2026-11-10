@@ -233,8 +233,8 @@ function Rig({ mouse, scroll, pulse, dark }: Shared) {
     // keep the whole system (rings included) inside the right-hand zone on desktop
     const fit = Math.min(1.05, Math.max(0.5, size.width / 1500));
     const targetX = wide ? viewport.width * 0.27 : 0;
-    const targetY = (wide ? 0.05 : viewport.height * 0.3) + s * 1.6;
-    const targetScale = (wide ? fit : Math.min(0.68, size.width / 600)) * (1 - s * 0.35);
+    const targetY = (wide ? 0.05 : viewport.height * 0.36) + s * 1.6;
+    const targetScale = (wide ? fit : Math.min(0.55, size.width / 700)) * (1 - s * 0.35);
     g.position.x += (targetX - g.position.x) * k;
     g.position.y += (targetY - g.position.y) * k;
     g.scale.setScalar(g.scale.x + (targetScale - g.scale.x) * k);

@@ -92,6 +92,9 @@
    ========================================================= */
 html {
   color-scheme: light;
+  overflow-x: clip;
+  max-width: 100%;
+  overscroll-behavior-x: none;
 }
 html[data-theme="dark"] {
   color-scheme: dark;
@@ -112,6 +115,8 @@ body {
   color: var(--fg);
   font-family: var(--font-body), system-ui, sans-serif;
   overflow-x: clip;
+  max-width: 100%;
+  position: relative;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -451,4 +456,16 @@ html.js .hero-init {
 .edge-fade::after {
   bottom: 0;
   background: linear-gradient(transparent, var(--page-bg));
+}
+
+.edge-fade-top::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 120px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(var(--page-bg), transparent);
 }

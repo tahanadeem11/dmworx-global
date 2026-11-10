@@ -42,7 +42,7 @@ export function Process() {
   }, []);
 
   return (
-    <section ref={root} className="relative py-24 sm:py-36">
+    <section ref={root} className="overflow-x-clip relative py-24 sm:py-36">
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <Reveal y={16}>

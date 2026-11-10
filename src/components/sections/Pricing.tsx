@@ -6,7 +6,7 @@ import { plans } from "@/data/content";
 
 export function Pricing() {
   return (
-    <section id="pricing" className="relative scroll-mt-20 py-24 sm:py-32">
+    <section id="pricing" className="relative scroll-mt-20 overflow-x-clip py-24 sm:py-32">
       <div className="orb left-1/2 top-1/3 h-[28rem] w-[28rem] -translate-x-1/2 bg-royal" aria-hidden />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading

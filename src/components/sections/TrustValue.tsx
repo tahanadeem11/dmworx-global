@@ -51,7 +51,7 @@ export function TrustValue() {
   }, []);
 
   return (
-    <section ref={root} className="band relative py-24 sm:py-36">
+    <section ref={root} className="overflow-x-clip band relative py-24 sm:py-36">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal y={16}>
           <span className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-electric">

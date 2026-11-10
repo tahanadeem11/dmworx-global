@@ -44,3 +44,66 @@ export const process = [
   { n: "03", title: "Create", text: "Design, develop, implement, and refine the solution." },
   { n: "04", title: "Grow", text: "Launch, monitor, optimize, and support continued growth." },
 ];
+
+export type Plan = {
+  id: string;
+  name: string;
+  tagline: string;
+  price: number;
+  cta: string;
+  popular?: boolean;
+  inherits?: string;
+  features: string[];
+};
+
+export const plans: Plan[] = [
+  {
+    id: "basic",
+    name: "Basic",
+    tagline: "Launch your local presence and start ranking.",
+    price: 249,
+    cta: "Start Basic",
+    features: [
+      "GBP Listing Management",
+      "Keyword Research",
+      "On-Page SEO",
+      "On-Page Keyword Optimization",
+      "Technical SEO",
+      "NAP Citations",
+      "Social Media Management",
+    ],
+  },
+  {
+    id: "silver",
+    name: "Silver",
+    tagline: "Everything in Basic plus key growth essentials.",
+    price: 499,
+    cta: "Go Silver",
+    popular: true,
+    inherits: "Everything in Basic",
+    features: [
+      "GBP Account Creation & Management",
+      "NAP Consistency Audit",
+      "Business Directory Listings",
+      "Business Card & QR Code",
+      "Business Flyer Design",
+      "YouTube Brand Video",
+    ],
+  },
+  {
+    id: "gold",
+    name: "Gold",
+    tagline: "Full-scale dominance across every channel.",
+    price: 699,
+    cta: "Go Gold",
+    inherits: "Everything in Silver",
+    features: [
+      "In-Depth SEO & Content Strategy",
+      "Local Citations & Press",
+      "Social Media Ads Management",
+      "Advanced Analytics Dashboard",
+      "Business Toolkit Suite",
+      "Priority Support",
+    ],
+  },
+];

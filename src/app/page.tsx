@@ -3,6 +3,7 @@ import { FeaturedPortfolio } from "@/components/sections/FeaturedPortfolio";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { Hero } from "@/components/sections/Hero";
 import { Impact } from "@/components/sections/Impact";
+import { Pricing } from "@/components/sections/Pricing";
 import { Process } from "@/components/sections/Process";
 import { ServicesOverview } from "@/components/sections/ServicesOverview";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -17,6 +18,7 @@ export default function Home() {
       <JsonLd data={[orgJsonLd(), faqJsonLd(homeFaqs)]} />
       <Hero />
       <TrustValue />
+      <Pricing />
       <ServicesOverview />
       <WhyChoose />
       <Process />

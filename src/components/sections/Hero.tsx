@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { Code2, MousePointer2, Palette, Sparkles, TrendingUp } from "lucide-react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -24,6 +25,7 @@ function hasWebGL() {
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+  const slot = useRef<HTMLDivElement>(null);
   const progress = useRef(0);
   const ready = useReady();
   const [webgl, setWebgl] = useState<boolean | null>(null);
@@ -60,8 +62,7 @@ export function Hero() {
     const el = root.current!;
 
     const ctx = gsap.context(() => {
-      const show = (sel: string, vars: gsap.TweenVars = {}) => gsap.set(sel, { visibility: "visible", ...vars });
-      show(".hero-init");
+      gsap.set(".hero-init", { visibility: "visible" });
       if (reduce) return;
 
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
@@ -81,7 +82,7 @@ export function Hero() {
         .fromTo(".h-strip", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, 1.2)
         .fromTo(".h-cue", { opacity: 0 }, { opacity: 1, duration: 1 }, 1.5);
 
-      // scroll exit: content drifts up while the 3D orb recedes
+      // scroll exit: content drifts up while the 3D logo recedes
       ScrollTrigger.create({
         trigger: el,
         start: "top top",
@@ -90,7 +91,7 @@ export function Hero() {
         onUpdate: (self) => (progress.current = self.progress),
       });
       gsap.to(".h-content", {
-        yPercent: -14,
+        yPercent: -10,
         opacity: 0.2,
         ease: "none",
         scrollTrigger: { trigger: el, start: "top top", end: "bottom 20%", scrub: true },
@@ -98,8 +99,7 @@ export function Hero() {
 
       // cursor parallax on floating glass chips
       if (window.matchMedia("(hover: hover)").matches) {
-        const pars = gsap.utils.toArray<HTMLElement>(".h-par");
-        const movers = pars.map((p) => ({
+        const movers = gsap.utils.toArray<HTMLElement>(".h-par").map((p) => ({
           x: gsap.quickTo(p, "x", { duration: 0.9, ease: "power3" }),
           y: gsap.quickTo(p, "y", { duration: 0.9, ease: "power3" }),
           d: Number(p.dataset.depth ?? 20),
@@ -129,86 +129,88 @@ export function Hero() {
       <div className="orb -left-40 -top-20 -z-20 h-[36rem] w-[36rem] bg-purple" aria-hidden />
       <div className="orb -right-40 top-1/3 -z-20 h-[34rem] w-[34rem] bg-electric" aria-hidden />
 
-      {/* 3D scene */}
-      <div className={`absolute inset-0 -z-10 transition-opacity duration-[1400ms] ${sceneReady || webgl === false ? "opacity-100" : "opacity-0"}`} aria-hidden>
+      {/* 3D logo scene (fills the hero; it positions itself inside the visual slot below) */}
+      <div
+        className={`absolute inset-0 -z-10 transition-opacity duration-[1400ms] ${sceneReady || webgl === false ? "opacity-100" : "opacity-0"}`}
+        aria-hidden
+      >
         {webgl ? (
-          <HeroScene progress={progress} active={inView && ready} onReady={() => setSceneReady(true)} />
+          <HeroScene progress={progress} active={inView && ready} anchorEl={slot} onReady={() => setSceneReady(true)} />
         ) : (
           webgl === false && (
-            <div className="bg-brand absolute right-[12%] top-1/2 h-72 w-72 -translate-y-1/2 rounded-full opacity-70 blur-2xl" />
+            <Image src="/logos/dm-mark.png" alt="" width={724} height={267} priority className="absolute right-[8%] top-1/2 w-[34%] -translate-y-1/2 drop-shadow-2xl" />
           )
         )}
       </div>
-      {/* keeps copy legible over the 3D scene in both themes */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-bg from-40% via-bg/70 via-60% to-transparent lg:bg-gradient-to-r lg:from-bg lg:via-bg/55 lg:to-transparent lg:[mask-image:linear-gradient(90deg,#000_30%,transparent_62%)]" aria-hidden />
 
-      <div className="h-content relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-5 pb-10 pt-32 sm:px-8 lg:justify-center lg:pb-16">
-        <div className="max-w-3xl">
-          <span className="h-eyebrow hero-init glass inline-flex items-center gap-2.5 rounded-full py-1.5 pl-2 pr-4 text-[11px] font-semibold uppercase tracking-[0.18em] sm:text-xs">
-            <span className="bg-brand grid h-6 w-6 place-items-center rounded-full text-white">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden />
-            </span>
-            Digital solutions &amp; technology agency
-          </span>
-
-          <h1 className="mt-6 text-[clamp(2.6rem,7.4vw,6.4rem)] font-semibold leading-[0.98]">
-            <span className="h-line hero-init block">Transforming Ideas</span>
-            <span className="h-line hero-init block">Into Powerful</span>
-            <span className="block overflow-hidden pb-[0.12em]">
-              <span className="h-accent hero-init text-brand-anim block">Digital Experiences.</span>
-            </span>
-          </h1>
-
-          <p className="h-sub hero-init mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            From strategic digital marketing to high-performance websites and mobile applications, we help businesses build their digital presence, reach the right audience, and grow with confidence.
-          </p>
-
-          <div className="h-cta mt-9 flex flex-wrap gap-4">
-            <Button href="/services" className="hero-init">Explore Our Services</Button>
-            <Button href="/contact" variant="ghost" className="hero-init">Let&apos;s Work Together</Button>
-          </div>
-        </div>
-      </div>
-
-      {/* floating glass chips: parallax with the cursor (desktop) */}
-      <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
-        <div className="mx-auto h-full max-w-7xl px-8">
-          <div className="relative h-full">
-            <div className="h-par hero-init absolute right-[30%] top-[19%]" data-depth="26">
-              <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3">
-                <span className="bg-brand-2 grid h-9 w-9 place-items-center rounded-xl text-white"><Code2 className="h-[18px] w-[18px]" /></span>
-                <div>
-                  <div className="text-[11px] uppercase tracking-widest text-muted">Web &amp; Apps</div>
-                  <div className="font-display text-sm font-semibold">Fast. Secure. Scalable.</div>
+      <div className="h-content relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-5 pb-12 pt-28 sm:px-8 lg:pb-16 lg:pt-32">
+        <div className="grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          {/* visual slot: the 3D logo and chips are aligned to this box */}
+          <div ref={slot} className="relative order-first h-[34svh] min-h-[15rem] lg:order-last lg:h-[34rem]">
+            <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+              <div className="h-par hero-init absolute left-[-2%] top-[8%]" data-depth="22">
+                <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3">
+                  <span className="bg-brand-2 grid h-9 w-9 place-items-center rounded-xl text-white"><Code2 className="h-[18px] w-[18px]" /></span>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-widest text-muted">Web &amp; Apps</div>
+                    <div className="font-display text-sm font-semibold">Fast. Secure. Scalable.</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="h-par hero-init absolute right-[0%] top-[27%]" data-depth="40">
-              <div className="glass float-y rounded-2xl px-4 py-3" style={{ animationDelay: "1.2s" }}>
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted"><TrendingUp className="h-3.5 w-3.5 text-electric" /> Search visibility</div>
-                <div className="mt-2 flex h-9 items-end gap-1.5">
-                  {[35, 52, 44, 70, 62, 88, 100].map((h, i) => (
-                    <span key={i} className="bg-brand w-2 rounded-sm" style={{ height: `${h}%` }} />
-                  ))}
+              <div className="h-par hero-init absolute right-[0%] top-[2%]" data-depth="32">
+                <div className="glass float-y flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium" style={{ animationDelay: "2.6s" }}>
+                  <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-cyan" /></span>
+                  Open for new projects
                 </div>
               </div>
-            </div>
-            <div className="h-par hero-init absolute bottom-[26%] right-[12%]" data-depth="34">
-              <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3" style={{ animationDelay: "2.2s" }}>
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-solid text-purple"><Palette className="h-[18px] w-[18px]" /></span>
-                <div>
-                  <div className="text-[11px] uppercase tracking-widest text-muted">Brand &amp; Creative</div>
-                  <div className="mt-1 flex gap-1.5">
-                    {["#a020f0", "#4338f5", "#087bff", "#08bfea"].map((c) => <span key={c} className="h-3.5 w-3.5 rounded-full" style={{ background: c }} />)}
+              <div className="h-par hero-init absolute bottom-[10%] right-[-2%]" data-depth="36">
+                <div className="glass float-y rounded-2xl px-4 py-3" style={{ animationDelay: "1.2s" }}>
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted"><TrendingUp className="h-3.5 w-3.5 text-electric" /> Search visibility</div>
+                  <div className="mt-2 flex h-8 items-end gap-1.5">
+                    {[35, 52, 44, 70, 62, 88, 100].map((h, i) => (
+                      <span key={i} className="bg-brand w-2 rounded-sm" style={{ height: `${h}%` }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="h-par hero-init absolute bottom-[4%] left-[4%]" data-depth="28">
+                <div className="glass float-y flex items-center gap-3 rounded-2xl px-4 py-3" style={{ animationDelay: "2.2s" }}>
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-solid text-purple"><Palette className="h-[18px] w-[18px]" /></span>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-widest text-muted">Brand &amp; Creative</div>
+                    <div className="mt-1 flex gap-1.5">
+                      {["#a020f0", "#4338f5", "#087bff", "#08bfea"].map((c) => <span key={c} className="h-3.5 w-3.5 rounded-full" style={{ background: c }} />)}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="h-par hero-init absolute right-[8%] top-[16%]" data-depth="18">
-              <div className="glass float-y flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium" style={{ animationDelay: "3s" }}>
-                <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-cyan" /></span>
-                Open for new projects
-              </div>
+          </div>
+
+          {/* copy */}
+          <div className="max-w-2xl">
+            <span className="h-eyebrow hero-init glass inline-flex items-center gap-2.5 rounded-full py-1.5 pl-2 pr-4 text-[10px] font-semibold uppercase tracking-[0.16em] sm:text-xs sm:tracking-[0.18em]">
+              <span className="bg-brand grid h-6 w-6 shrink-0 place-items-center rounded-full text-white">
+                <Sparkles className="h-3.5 w-3.5" aria-hidden />
+              </span>
+              Digital solutions &amp; technology agency
+            </span>
+
+            <h1 className="mt-6 text-[clamp(2.5rem,6.4vw,5.6rem)] font-semibold leading-[1.0]">
+              <span className="h-line hero-init block">Transforming Ideas</span>
+              <span className="h-line hero-init block">Into Powerful</span>
+              <span className="block overflow-hidden pb-[0.12em]">
+                <span className="h-accent hero-init text-brand-anim block">Digital Experiences.</span>
+              </span>
+            </h1>
+
+            <p className="h-sub hero-init mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              From strategic digital marketing to high-performance websites and mobile applications, we help businesses build their digital presence, reach the right audience, and grow with confidence.
+            </p>
+
+            <div className="h-cta mt-8 flex flex-wrap gap-4">
+              <Button href="/services" className="hero-init">Explore Our Services</Button>
+              <Button href="/contact" variant="ghost" className="hero-init">Let&apos;s Work Together</Button>
             </div>
           </div>
         </div>
@@ -216,7 +218,7 @@ export function Hero() {
 
       {/* interaction hint */}
       <div className="h-cue hero-init absolute bottom-[5.5rem] right-8 hidden items-center gap-2 text-xs text-muted xl:flex" aria-hidden>
-        <MousePointer2 className="h-3.5 w-3.5" /> Move your cursor · click the orb
+        <MousePointer2 className="h-3.5 w-3.5" /> Move your cursor · click the logo
       </div>
 
       {/* services marquee */}

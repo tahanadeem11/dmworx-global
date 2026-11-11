@@ -140,18 +140,16 @@ export function Footer() {
           <p className="text-center sm:text-left">
             © <Year /> <strong className="text-fg">{site.name}</strong> · {a.city}, {a.region}
           </p>
-          {/* accepted payment cards on a white plate */}
-          <div className="rounded-lg bg-white px-3 py-1.5 shadow-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/payment-cards.png"
-              alt="Visa, MasterCard, Discover Network and American Express accepted"
-              width={850}
-              height={230}
-              loading="lazy"
-              className="h-8 w-auto sm:h-9"
-            />
-          </div>
+          {/* accepted payment cards */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/payment-cards.webp"
+            alt="MasterCard, Visa, American Express and Discover Network accepted"
+            width={2000}
+            height={370}
+            loading="lazy"
+            className="h-8 w-auto sm:h-9"
+          />
           <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <li><Link href="/privacy-policy" className="hover:text-fg">Privacy Policy</Link></li>
             <li><Link href="/terms-and-conditions" className="hover:text-fg">Terms of Use</Link></li>

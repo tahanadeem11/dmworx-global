@@ -135,8 +135,24 @@ export function Footer() {
           </div>
         </div>
 
+        {/* accepted payment cards, centred on a white plate */}
+        <div className="mt-14 flex flex-col items-center gap-3">
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-muted">We accept</p>
+          <div className="rounded-2xl bg-white px-5 py-3 shadow-xl sm:px-7 sm:py-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/payment-cards.png"
+              alt="Visa, MasterCard, Discover Network and American Express accepted"
+              width={850}
+              height={230}
+              loading="lazy"
+              className="h-12 w-auto sm:h-16"
+            />
+          </div>
+        </div>
+
         {/* bottom bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 font-mono text-xs text-muted sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 font-mono text-xs text-muted sm:flex-row">
           <p className="text-center sm:text-left">
             © <Year /> <strong className="text-fg">{site.name}</strong> · {a.city}, {a.region}
           </p>
